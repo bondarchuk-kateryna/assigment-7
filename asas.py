@@ -12,3 +12,6 @@ def task1(filename,country,year):
 
 
 task1("data.csv", "USA", "1996")
+
+
+print("Katya loh")
