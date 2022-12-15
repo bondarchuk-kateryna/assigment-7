@@ -1,6 +1,6 @@
 import argparse
 
-parser = argparse.ArgumentParser(description="Our example parser")
+parser = argparse.argumentparser(description="Our example parser")
 parser.add_argument("--filename","-f",required=True,)
 parser.add_argument("--medals", action="store_true", require=False)
 parser.add_argument("--output", "-o", require=False)
@@ -61,13 +61,50 @@ def task1(filename,country,year,output):
 
 task1('data.tsv','USA','1998')
 
+def task2(filename,country,year,output):
+    total = 0
+    information = line.split("\t")
+        _year=information[7]
+        _medals=information[12]
+        _team=information[5]
+        _sport=information[10]
+        _NOC=information[6]
+        _name=information[1]
+    line = filename.readlines()
+    line_to_write=""
+
+    if total is not None:
+        year = total
+        country = {}
+    for line in line:
+        command = line.split('\t')
+        if year in command[9]:
+            keys = country.keys()
+            if command[6] in keys:
+                if "Gold" in command[14]:
+                    country[command[6]]["Gold"] +=1
+                if "Bronze" in command[14]:
+                    country[command[6]]["Bronze"] +=1
+                if "Silver" in command[14]:
+                    country[command[6]]["Silver"] +=1
+                if "NA" in command[14]:
+                    country[command[6]]["NA"] +=1
+            else:
+                country[command[6]] = {"Gold":0, "Bronze":0, "Silver":0, "NA":0}
+
+    for c in country.items():
+        if c[1]["Gold"] > 0 or c[1]["Bronze"] > 0 or c[1]["Silver"]:
+            # print(c)
+            print("{:<20}".format(c[0]),"{:<10}".format(c[1]["Gold"]),"{:<10}".format(c[1]["Silver"]),"{:<10}".format(c[1]["Bronze"]))
+            line_to_write+=c[0]+"\t"+str(c[1]["Gold"])+"\t"+str(c[1]["Silver"])+"\t"+str(c[1]["Bronze"])+"\n"
+
 def task3(overall,filename):
     lines = filename.readlines()
     overall = 0
     line_to_write = ""
     if overall is not None:
-    print(overall)
-    line_to_write+="Country"+"\t"+"Year"+"\t"+"max Count Medal"+"\n"
+        print(overall)
+        line_to_write+="Country"+"\t"+"Year"+"\t"+"max Count Medal"+"\n"
     for country in overall:
         countMedalYear = {}
         for line in lines:
@@ -87,53 +124,4 @@ def task3(overall,filename):
                 Year = count
         print(country, Year, maxCountMedal)
         line_to_write+=country+"\t"+str(Year)+"\t"+str(maxCountMedal)+"\n"
-
-    if interactive is not None:
-        inputText = ""
-        while(inputText != "exit"):
-            foundCountry = False
-            inputText = input("Input name/code Country: ")
-            if inputText == "exit":
-                break
-            firstTakePartYear = 2022
-            firstTakePartCity = ""
-            countMedalYear = {}
-            countMedalOlymp = {}
-            for line in lines:
-                command = line.split('\t')
-                if inputText in command[6] or inputText in command[7]:
-                    foundCountry = True
-                    #1
-                    if int(command[9]) <  firstTakePartYear:
-                        firstTakePartYear = int(command[9])
-                        firstTakePartCity = command[11]
-                    #2-3
-                    keys = countMedalYear.keys()
-                    if command[9] in keys:
-                        if "Gold" in command[14] or "Bronze" in command[14] or "Silver" in command[14]:
-                            countMedalYear[command[9]] +=1
-                    else:
-                        countMedalYear[command[9]] = 0
-                    #4
-                    keys = countMedalOlymp.keys()
-                    if command[9] not in keys:
-                        countMedalOlymp[command[9]] = {"Gold":0, "Bronze":0, "Silver":0, "countGames":0}
-                    if command[9] in keys:
-                        if "Gold" in command[14]:
-                            countMedalOlymp[command[9]]["Gold"] +=1
-                        if "Bronze" in command[14]:
-                            countMedalOlymp[command[9]]["Bronze"] +=1
-                        if "Silver" in command[14]:
-                            countMedalOlymp[command[9]]["Silver"] +=1
-                        countMedalOlymp[command[9]]["countGames"] +=1
-                    # print(command)
-            if foundCountry == False:
-                print("Country",inputText," is not find!")
-                line_to_write+="Country "+inputText+" is not find!"+"\n"
-            else:
-                print("\tCountry: ", inputText)
-                line_to_write+="\tCountry: "+inputText+"\n"
-                #1
-                print("\tFirst take party: ", firstTakePartYear, firstTakePartCity)
-                line_to_write+="\tFirst"
 
