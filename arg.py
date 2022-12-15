@@ -15,7 +15,7 @@ output = args['output']
 total = args['total']
 overall = args['overall']
 interactive = args['interactive']
-
+file= open("filename","r")
 def task1(filename,country,year,output):
     gold = 0
     silver = 0
@@ -26,7 +26,7 @@ def task1(filename,country,year,output):
 
 
     while True:
-        line = filename.readlines()
+        line = file.readline()
         if not line : break
 
         information = line.split("\t")
@@ -63,13 +63,14 @@ task1('data.tsv','USA','1998')
 
 def task2(filename,country,year,output):
     total = 0
+    line = file.readline()
     information = line.split("\t")
-        _year=information[7]
-        _medals=information[12]
-        _team=information[5]
-        _sport=information[10]
-        _NOC=information[6]
-        _name=information[1]
+    _year=information[7]
+    _medals=information[12]
+    _team=information[5]
+    _sport=information[10]
+    _NOC=information[6]
+    _name=information[1]
     line = filename.readlines()
     line_to_write=""
 
@@ -98,8 +99,8 @@ def task2(filename,country,year,output):
             print("{:<20}".format(c[0]),"{:<10}".format(c[1]["Gold"]),"{:<10}".format(c[1]["Silver"]),"{:<10}".format(c[1]["Bronze"]))
             line_to_write+=c[0]+"\t"+str(c[1]["Gold"])+"\t"+str(c[1]["Silver"])+"\t"+str(c[1]["Bronze"])+"\n"
 
-def task3(overall,filename):
-    lines = filename.readlines()
+def task3(overall,file):
+    lines = file.readlines()
     overall = 0
     line_to_write = ""
     if overall is not None:
