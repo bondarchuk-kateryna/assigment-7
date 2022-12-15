@@ -125,3 +125,90 @@ def task3(overall,filename):
         print(country, Year, maxCountMedal)
         line_to_write+=country+"\t"+str(Year)+"\t"+str(maxCountMedal)+"\n"
 
+def task4(output,overall,interactive,filename):
+    lines = filename.readlines()
+    overall = 0
+    line_to_write = ""
+    if interactive is not None:
+        inputText = ""
+        while(inputText != "exit"):
+            foundCountry = False
+            inputText = input("Input name/code Country: ")
+            if inputText == "exit":
+                break
+            firstTakePartYear = 2022
+            firstTakePartCity = ""
+            countMedalYear = {}
+            countMedalOlymp = {}
+            for line in lines:
+                command = line.split('\t')
+                if inputText in command[6] or inputText in command[7]:
+                    foundCountry = True
+                    #1
+                    if int(command[9]) <  firstTakePartYear:
+                        firstTakePartYear = int(command[9])
+                        firstTakePartCity = command[11]
+                    #2-3
+                    keys = countMedalYear.keys()
+                    if command[9] in keys:
+                        if "Gold" in command[14] or "Bronze" in command[14] or "Silver" in command[14]:
+                            countMedalYear[command[9]] +=1
+                    else:
+                        countMedalYear[command[9]] = 0
+                    #4
+                    keys = countMedalOlymp.keys()
+                    if command[9] not in keys:
+                        countMedalOlymp[command[9]] = {"Gold":0, "Bronze":0, "Silver":0, "countGames":0}
+                    if command[9] in keys:
+                        if "Gold" in command[14]:
+                            countMedalOlymp[command[9]]["Gold"] +=1
+                        if "Bronze" in command[14]:
+                            countMedalOlymp[command[9]]["Bronze"] +=1
+                        if "Silver" in command[14]:
+                            countMedalOlymp[command[9]]["Silver"] +=1
+                        countMedalOlymp[command[9]]["countGames"] +=1
+                    # print(command)
+            if foundCountry == False:
+                print("Country",inputText," is not find!")
+                line_to_write+="Country "+inputText+" is not find!"+"\n"
+            else:
+                print("\tCountry: ", inputText)
+                line_to_write+="\tCountry: "+inputText+"\n"
+                #1
+                print("\tFirst take party: ", firstTakePartYear, firstTakePartCity)
+                line_to_write+="\tFirst"
+                take_party: "+str(firstTakePartYear)+"  "+firstTakePartCity+""\n"
+            #2-3
+            maxCountMedalYear = 0
+            maxCountMedal = 0
+            minCountMedalYear = 0
+            minCountMedal = 100
+            for count in countMedalYear:
+                if int(countMedalYear[count]) > maxCountMedal:
+                    maxCountMedal = countMedalYear[count]
+                    maxCountMedalYear = count
+                if int(countMedalYear[count]) < minCountMedal:
+                    minCountMedal = countMedalYear[count]
+                    minCountMedalYear = count
+            print("\tSuccess olymp: ",maxCountMedalYear, maxCountMedal)
+            line_to_write+="\tSuccess olymp: "+str(maxCountMedalYear)+" "+str(maxCountMedal)+"\n"
+            print("\tFailed olymp: ",minCountMedalYear, minCountMedal)
+            line_to_write+="\tFailed olymp: "+str(minCountMedalYear)+" "+str(minCountMedal)+"\n"
+
+            #4
+            print("\tAvarage type medal for olymp")
+            line_to_write+="\tAvarage type medal for olymp"+"\n"
+            print("\t Year Gold Bronze Silver")
+            line_to_write+="\t Year Gold Bronze Silver"+"\n"
+            for olymp in countMedalOlymp:
+                Gold = countMedalOlymp[olymp]["Gold"]
+                Bronze = countMedalOlymp[olymp]["Bronze"]
+                Silver = countMedalOlymp[olymp]["Silver"]
+                countGames = countMedalOlymp[olymp]["countGames"]
+                print("\t",olymp, Gold/countGames, Bronze/countGames, Silver/countGames)
+                line_to_write+="\t"+olymp+" "+str(Gold/countGames)+" "+str(Bronze/countGames)+" "+str(Silver/countGames)+"\n"
+            if output is not None:
+                f = open(output, "w")
+                f.write(line_to_write)
+                f.close()
+                print('Output in save file:', output)
