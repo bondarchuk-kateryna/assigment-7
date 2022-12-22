@@ -15,7 +15,8 @@ output = args['output']
 total = args['total']
 overall = args['overall']
 interactive = args['interactive']
-file= open("filename","r")
+file = open("filename","r")
+
 def task1(filename,country,year,output):
     gold = 0
     silver = 0
@@ -30,11 +31,11 @@ def task1(filename,country,year,output):
         if not line : break
 
         information = line.split("\t")
-        _year=information[7]
-        _medals=information[12]
-        _team=information[5]
-        _sport=information[10]
-        _NOC=information[6]
+        _year=information[9]
+        _medals=information[14]
+        _team=information[6]
+        _sport=information[12]
+        _NOC=information[7]
         _name=information[1]
         if year == _year:
             if country == _NOC or country == _team :
@@ -63,14 +64,15 @@ task1('data.tsv','USA','1998')
 
 def task2(filename,country,year,output):
     total = 0
-    line = file.readline()
-    lines = filename.readlines()
     line_to_write=""
+
+    lines = filename.readlines()
 
     if total is not None:
         year = total
         country = {}
     for line in lines:
+        lines = filename.readlines()
         command = line.split('\t')
         if year in command[9]:
             keys = country.keys()
@@ -78,7 +80,7 @@ def task2(filename,country,year,output):
                 if "Gold" in command[14]:
                     country[command[7]]["Gold"] +=1
                 if "Bronze" in command[14]:
-                    country[command[7]["Bronze"] +=1
+                    country[command[7]]["Bronze"] +=1
                 if "Silver" in command[14]:
                     country[command[7]]["Silver"] +=1
                 if "NA" in command[14]:
@@ -103,7 +105,7 @@ def task3(overall,file):
         countMedalYear = {}
         for line in lines:
             command = line.split('\t')
-            if command[6] == country:
+            if command[7] == country:
                 keys = countMedalYear.keys()
                 if command[9] in keys:
                     if "Gold" in command[14] or "Bronze" in command[14] or "Silver" in command[14]:
@@ -171,7 +173,7 @@ def task4(output,overall,interactive,filename):
                 #1
                 print("\tFirst take party: ", firstTakePartYear, firstTakePartCity)
                 line_to_write+="\tFirst"
-                take_party: "+str(firstTakePartYear)+"  "+firstTakePartCity+""\n"
+                take_party = "str(firstTakePartYear)"  "firstTakePartCity" "\n"
             #2-3
             maxCountMedalYear = 0
             maxCountMedal = 0
