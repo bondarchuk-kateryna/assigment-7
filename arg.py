@@ -64,32 +64,25 @@ task1('data.tsv','USA','1998')
 def task2(filename,country,year,output):
     total = 0
     line = file.readline()
-    information = line.split("\t")
-    _year=information[7]
-    _medals=information[12]
-    _team=information[5]
-    _sport=information[10]
-    _NOC=information[6]
-    _name=information[1]
-    line = filename.readlines()
+    lines = filename.readlines()
     line_to_write=""
 
     if total is not None:
         year = total
         country = {}
-    for line in line:
+    for line in lines:
         command = line.split('\t')
         if year in command[9]:
             keys = country.keys()
             if command[6] in keys:
                 if "Gold" in command[14]:
-                    country[command[6]]["Gold"] +=1
+                    country[command[7]]["Gold"] +=1
                 if "Bronze" in command[14]:
-                    country[command[6]]["Bronze"] +=1
+                    country[command[7]["Bronze"] +=1
                 if "Silver" in command[14]:
-                    country[command[6]]["Silver"] +=1
+                    country[command[7]]["Silver"] +=1
                 if "NA" in command[14]:
-                    country[command[6]]["NA"] +=1
+                    country[command[7]]["NA"] +=1
             else:
                 country[command[6]] = {"Gold":0, "Bronze":0, "Silver":0, "NA":0}
 
