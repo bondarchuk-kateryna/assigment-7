@@ -90,7 +90,6 @@ def task2(filename,country,year,output):
 
     for c in country.items():
         if c[1]["Gold"] > 0 or c[1]["Bronze"] > 0 or c[1]["Silver"]:
-            # print(c)
             print("{:<20}".format(c[0]),"{:<10}".format(c[1]["Gold"]),"{:<10}".format(c[1]["Silver"]),"{:<10}".format(c[1]["Bronze"]))
             line_to_write+=c[0]+"\t"+str(c[1]["Gold"])+"\t"+str(c[1]["Silver"])+"\t"+str(c[1]["Bronze"])+"\n"
 
@@ -140,18 +139,18 @@ def task4(output,overall,interactive,filename):
                 command = line.split('\t')
                 if inputText in command[6] or inputText in command[7]:
                     foundCountry = True
-                    #1
+                    #cтатистика першої участі в олімпіаді
                     if int(command[9]) <  firstTakePartYear:
                         firstTakePartYear = int(command[9])
                         firstTakePartCity = command[11]
-                    #2-3
+                    #найуспішніша,найневдаліша олімпіада за кількістю медалей
                     keys = countMedalYear.keys()
                     if command[9] in keys:
                         if "Gold" in command[14] or "Bronze" in command[14] or "Silver" in command[14]:
                             countMedalYear[command[9]] +=1
                     else:
                         countMedalYear[command[9]] = 0
-                    #4
+                    #середня кількість медалей
                     keys = countMedalOlymp.keys()
                     if command[9] not in keys:
                         countMedalOlymp[command[9]] = {"Gold":0, "Bronze":0, "Silver":0, "countGames":0}
@@ -170,11 +169,11 @@ def task4(output,overall,interactive,filename):
             else:
                 print("\tCountry: ", inputText)
                 line_to_write+="\tCountry: "+inputText+"\n"
-                #1
+                #виведення
                 print("\tFirst take party: ", firstTakePartYear, firstTakePartCity)
                 line_to_write+="\tFirst"
                 take_party = "str(firstTakePartYear)"  "firstTakePartCity" "\n"
-            #2-3
+            #виведення
             maxCountMedalYear = 0
             maxCountMedal = 0
             minCountMedalYear = 0
@@ -191,7 +190,7 @@ def task4(output,overall,interactive,filename):
             print("\tFailed olymp: ",minCountMedalYear, minCountMedal)
             line_to_write+="\tFailed olymp: "+str(minCountMedalYear)+" "+str(minCountMedal)+"\n"
 
-            #4
+            #виведення
             print("\tAvarage type medal for olymp")
             line_to_write+="\tAvarage type medal for olymp"+"\n"
             print("\t Year Gold Bronze Silver")
