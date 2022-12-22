@@ -1,14 +1,20 @@
 import argparse
+import sys
 
-parser = argparse.argumentparser(description="Our example parser")
+
+parser = argparse.ArgumentParser(description="Our example parser")
 parser.add_argument("--filename","-f",required=True,)
-parser.add_argument("--medals", action="store_true", require=False)
-parser.add_argument("--output", "-o", require=False)
-parser.add_argument("--year", "-y", require=False)
-parser.add_argument("--total", "-t", require=False)
-parser.add_argument("--team", require=False)
+parser.add_argument("--medals", action="store_true", required=False)
+parser.add_argument("--output", "-o", required=False)
+parser.add_argument("--year", "-y", required=False)
+parser.add_argument("--total", "-t",action="store_true", required=False)
+parser.add_argument("--team", required=False)
+parser.add_argument("--interactive", "-i" , action="store_true",required=False)
+parser.add_argument("--overall",action="store_true", required=False)
 
 args = parser.parse_args()
+team = args['team']
+year = args['year']
 filename = args['filename']
 medals = args['medals']
 output = args['output']
@@ -16,6 +22,20 @@ total = args['total']
 overall = args['overall']
 interactive = args['interactive']
 file = open("filename","r")
+
+def main():
+
+    if not args.filepath:
+        parser.print_help()
+        sys.exit(1)
+    if args.medals:
+        task1(args.filename, args.medals, args.output)
+    elif args.total:
+        task2(args.filename, args.total, args.output)
+    elif args.overall:
+        task3(args.filename, args.overall, args.output)
+    elif args.interactive:
+        task4(args.filename)
 
 def task1(filename,country,year,output):
     gold = 0
@@ -62,7 +82,7 @@ def task1(filename,country,year,output):
 
 task1('data.tsv','USA','1998')
 
-def task2(filename,country,year,output):
+def task2(filename,total):
     total = 0
     line_to_write=""
 
@@ -73,7 +93,7 @@ def task2(filename,country,year,output):
         country = {}
     for line in lines:
         lines = filename.readlines()
-        command = line.split('\t')
+        command = lines.split('\t')
         if year in command[9]:
             keys = country.keys()
             if command[6] in keys:
@@ -90,16 +110,12 @@ def task2(filename,country,year,output):
 
     for c in country.items():
         if c[1]["Gold"] > 0 or c[1]["Bronze"] > 0 or c[1]["Silver"]:
+
             print("{:<20}".format(c[0]),"{:<10}".format(c[1]["Gold"]),"{:<10}".format(c[1]["Silver"]),"{:<10}".format(c[1]["Bronze"]))
             line_to_write+=c[0]+"\t"+str(c[1]["Gold"])+"\t"+str(c[1]["Silver"])+"\t"+str(c[1]["Bronze"])+"\n"
 
 def task3(overall,file):
     lines = file.readlines()
-    overall = 0
-    line_to_write = ""
-    if overall is not None:
-        print(overall)
-        line_to_write+="Country"+"\t"+"Year"+"\t"+"max Count Medal"+"\n"
     for country in overall:
         countMedalYear = {}
         for line in lines:
@@ -118,11 +134,9 @@ def task3(overall,file):
                 maxCountMedal = countMedalYear[count]
                 Year = count
         print(country, Year, maxCountMedal)
-        line_to_write+=country+"\t"+str(Year)+"\t"+str(maxCountMedal)+"\n"
 
-def task4(output,overall,interactive,filename):
+def task4(filename):
     lines = filename.readlines()
-    overall = 0
     line_to_write = ""
     if interactive is not None:
         inputText = ""
@@ -207,3 +221,6 @@ def task4(output,overall,interactive,filename):
                 f.write(line_to_write)
                 f.close()
                 print('Output in save file:', output)
+
+
+main()
